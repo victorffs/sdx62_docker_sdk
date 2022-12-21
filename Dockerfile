@@ -39,7 +39,8 @@ unzip \
 wget \
 curl \
 vim \
-sudo
+sudo \
+uuid-dev
 
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
     locale-gen
@@ -62,10 +63,12 @@ WORKDIR /home/openlinux
 RUN cd /home/openlinux
 
 # Install croostools
-COPY docs_and_tools/Fibocom_Appcation_V1.0.0.zip /usr/src/
-RUN unzip /usr/src/Fibocom_Appcation_V1.0.0.zip -d /usr/src/
-RUN chmod +x /usr/src/Fibocom_Appcation_V1.0.0/toolchain/nogplv3-debug-x86_64-meta-toolchain-armv7vet2hf-neon-sdxlemur-toolchain-1-390-g047c4ea7c1.sh
-RUN /usr/src/Fibocom_Appcation_V1.0.0/toolchain/nogplv3-debug-x86_64-meta-toolchain-armv7vet2hf-neon-sdxlemur-toolchain-1-390-g047c4ea7c1.sh -y
+#COPY docs_and_tools/Fibocom_Appcation_V1.0.0.zip /usr/src/
+RUN mkdir -p /usr/src/toolchain
+COPY docs_and_tools/fibocom_appcation_build/toolchain/nogplv3-debug-x86_64-qti-mbb-image-armv7vet2hf-neon-sdxlemur-toolchain-2-106-g7b8612028a.sh /usr/src/toolchain/
+#RUN unzip /usr/src/Fibocom_Appcation_V1.0.0.zip -d /usr/src/
+RUN chmod +x /usr/src/toolchain/nogplv3-debug-x86_64-qti-mbb-image-armv7vet2hf-neon-sdxlemur-toolchain-2-106-g7b8612028a.sh
+RUN /usr/src/toolchain/nogplv3-debug-x86_64-qti-mbb-image-armv7vet2hf-neon-sdxlemur-toolchain-2-106-g7b8612028a.sh -y
 
 # Bitbake cant run as sudo
 RUN useradd -s /bin/bash openlinux
